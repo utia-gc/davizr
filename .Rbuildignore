@@ -1,0 +1,4 @@
+^renv$
+^renv\.lock$
+^davizr\.Rproj$
+^\.Rproj\.user$
