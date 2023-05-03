@@ -1,0 +1,10 @@
+# Program:featureCounts v2.0.1; Command:"featureCounts" "-T" "1" "-a" "annotations.gff" "-F" "GTF" "-o" "sample.txt" "sample_2_sorted.bam" 
+Geneid	Chr	Start	End	Strand	Length	sample_2_sorted.bam
+YAL069W	I	335	649	+	315	0
+YAL068W-A	I	538	792	+	255	0
+YAL068C	I	1807	2169	-	363	0
+YAL067W-A	I	2480	2707	+	228	0
+YAL067C	I	7235	9016	-	1782	0
+YAL066W	I	10091	10399	+	309	0
+YAL065C	I	11565	11951	-	387	0
+YAL064W-B	I	12046	12426	+	381	0
