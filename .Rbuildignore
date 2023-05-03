@@ -2,3 +2,4 @@
 ^renv\.lock$
 ^davizr\.Rproj$
 ^\.Rproj\.user$
+^LICENSE\.md$
