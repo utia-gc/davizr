@@ -5,6 +5,6 @@ test_that("read_featureCounts_matrix() returns counts matrix from vector of file
   )
   expect_equal(
     read_featureCounts_matrix(featureCounts_paths),
-    featureCounts_matrix()
+    counts_matrix()
   )
 })

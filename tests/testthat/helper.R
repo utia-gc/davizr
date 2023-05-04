@@ -1,4 +1,4 @@
-featureCounts_matrix <- function() {
+counts_matrix <- function() {
   matrix(
     rep(0, 16), ncol = 2,
     dimnames = list(
