@@ -16,12 +16,7 @@ construct_matrix_dds <- function(countData, colData, design = ~ 1, ...) {
   samples_order <- stringr::str_sort(BiocGenerics::intersect(colnames(countData), rownames(colData)), numeric = TRUE)
 
   if (length(samples_order) == 0) {
-    cli::cli_abort(
-      c("{.var counts} and {.var col_data} must have samples in common.",
-        "x" = "There {?is/are} {length(samples_order)} sample{?s} in common.",
-        "i" = "Did you verify {.var colnames(counts)} and {.var rownames(col_data)} have elements in common?"),
-      "no_common_samples"
-    )
+    abort_no_common_samples()
   }
 
   counts <- countData[, samples_order]
@@ -29,5 +24,18 @@ construct_matrix_dds <- function(countData, colData, design = ~ 1, ...) {
 
   DESeq2::DESeqDataSetFromMatrix(
     countData = counts, colData = col_data, design = stats::formula(design), ...
+  )
+}
+
+#' Abort when `countData` and `colData` have no samples in common.
+#'
+#' @return A condition of class `no_common_samples`
+#' @noRd
+abort_no_common_samples <- function() {
+  cli::cli_abort(
+    c("{.var countData} and {.var colData} must have samples in common.",
+      "x" = "There are 0 shared sample names between {.var countData} and {.var colData}.",
+      "i" = "Did you verify {.var colnames(countData)} and {.var rownames(colData)} have elements in common?"),
+    "no_common_samples"
   )
 }
