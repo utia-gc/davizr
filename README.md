@@ -6,9 +6,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of davizr is to provide convenience for making it easy to
-import and visualize data for differential analysis of sequencing data
-such as RNA-seq, ATAC-seq, ChIP-seq, etc.
+*D*ifferential *A*nalysis *VIS*ualiz*ER*
+
+`davizr` is an R package that makes it easy to import and visualize data
+for sequencing data differential analysis such as identifying
+differentially expressed genes (DEGs) from RNA-seq data, calling
+differentially accessible regions (DARs) from ATAC-seq data, etc.
 
 ## Installation
 
