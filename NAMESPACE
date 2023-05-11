@@ -3,5 +3,8 @@
 export("%>%")
 export(clean_matrix_colnames)
 export(construct_matrix_dds)
+export(count_experiment_detected_genes)
+export(count_samples_each_condition)
+export(get_design_covariates)
 export(read_featureCounts_matrix)
 importFrom(magrittr,"%>%")
