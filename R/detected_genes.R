@@ -1,3 +1,28 @@
+#' Plot detected gene counts for each library
+#'
+#' @description Generate a bar plot with the count of detected genes for each library.
+#'
+#'   If detected gene counts are not present in `dds` (i.e. no `detected_genes` column in `dds` column data),
+#'   detected genes are counted by [count_library_detected_genes()].
+#'
+#' @param dds A `DESeqDataSet`.
+#' @inheritParams count_library_detected_genes
+#'
+#' @return A ggplot object bar plot of counts of detected genes for each library.
+#' @export
+plot_detected_genes <- function(dds, threshold = 5) {
+  if (!has_detected_genes(dds)) {
+    dds$detected_genes <- count_library_detected_genes(dds, threshold = threshold)
+  }
+
+  dds %>%
+    SummarizedExperiment::colData() %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample_name") %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_bar(ggplot2::aes(x = sample_name, y = detected_genes), stat = "identity")
+}
+
 #' Count detected genes for each library
 #'
 #' @param dds A `DESeqDataSet`.
@@ -75,4 +100,14 @@ get_design_covariates <- function(dds) {
 #' @noRd
 has_sizeFactor <- function(dds) {
   "sizeFactor" %in% colnames(SummarizedExperiment::colData(dds))
+}
+
+#' Check if a `DESeqDataSet` has detected genes counts
+#'
+#' @param dds
+#'
+#' @return boolean for whether `dds` has a `detected_genes` column.
+#' @noRd
+has_detected_genes <- function(dds) {
+  "detected_genes" %in% colnames(SummarizedExperiment::colData(dds))
 }
