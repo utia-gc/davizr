@@ -35,3 +35,17 @@ random_dds <- function() {
     design = formula("~ batch + condition")
   )
 }
+
+library_detected_genes <- function() {
+  x <- c(97, 95, 93, 95, 91, 89, 95, 95)
+  names(x) <- paste0("sample", 1:8)
+
+  return(x)
+}
+
+library_detected_genes_low_thresh <- function() {
+  x <- c(98, 98, 99, 99, 98, 100, 98, 99)
+  names(x) <- paste0("sample", 1:8)
+
+  return(x)
+}

@@ -1,3 +1,16 @@
+#' Count detected genes for each library
+#'
+#' @param dds A `DESeqDataSet`.
+#' @param threshold Threshold for minimum normalized counts.
+#'
+#' @return A named vector of counts of detected genes for each sample.
+#' @export
+count_library_detected_genes <- function(dds, threshold = 5) {
+  base::colSums(
+    DESeq2::counts(dds, normalized = TRUE) >= threshold
+  )
+}
+
 #' Count detected genes for a whole experiment
 #'
 #' @description Count the number of genes with normalized counts above a specified threshold in the smallest condition set.
