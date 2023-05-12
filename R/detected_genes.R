@@ -6,6 +6,10 @@
 #' @return A named vector of counts of detected genes for each sample.
 #' @export
 count_library_detected_genes <- function(dds, threshold = 5) {
+  if (!has_sizeFactor(dds)) {
+    dds <- DESeq2::estimateSizeFactors(dds)
+  }
+
   base::colSums(
     DESeq2::counts(dds, normalized = TRUE) >= threshold
   )
@@ -22,6 +26,9 @@ count_library_detected_genes <- function(dds, threshold = 5) {
 #' @return Count of experiment-wide detected genes.
 #' @export
 count_experiment_detected_genes <- function(dds, threshold = 5, covariates = NULL) {
+  if (!has_sizeFactor(dds)) {
+    dds <- DESeq2::estimateSizeFactors(dds)
+  }
   counts <- DESeq2::counts(dds, normalized = TRUE)
 
   sum(
@@ -58,4 +65,14 @@ count_samples_each_condition <- function(dds, covariates = NULL) {
 get_design_covariates <- function(dds) {
   as.character(DESeq2::design(dds))[2] %>%
     stringr::str_split_1(pattern = " \\+ ")
+}
+
+#' Check if a `DESeqDataSet` has a `sizeFactor`
+#'
+#' @param dds A `DESeqDataSet`.
+#'
+#' @return boolean for whether `dds` has a `sizeFactor` column.
+#' @noRd
+has_sizeFactor <- function(dds) {
+  "sizeFactor" %in% colnames(SummarizedExperiment::colData(dds))
 }

@@ -1,24 +1,53 @@
-test_that("count_experiment_detected_genes() counts the correct number of detected genes", {
-  expect_equal(count_experiment_detected_genes(DESeq2::estimateSizeFactors(random_dds())), 100L)
+test_that("count_experiment_detected_genes() counts detected genes when no `sizeFactors`", {
+  dds <- random_dds()
+
+  expect_equal(
+    count_experiment_detected_genes(dds),
+    100L
+  )
 })
 
-test_that("count_experiment_detected_genes() counts the correct number of detected genes with high threshold", {
+test_that("count_experiment_detected_genes() counts detected genes when `sizeFactors` available", {
+  dds <- DESeq2::estimateSizeFactors(random_dds())
+
   expect_equal(
-    count_experiment_detected_genes(DESeq2::estimateSizeFactors(random_dds()), threshold = 25, covariates = "condition"),
+    count_experiment_detected_genes(dds),
+    100L
+  )
+})
+
+test_that("count_experiment_detected_genes() counts detected genes with high threshold", {
+  dds <- DESeq2::estimateSizeFactors(random_dds())
+
+  expect_equal(
+    count_experiment_detected_genes(dds, threshold = 25, covariates = "condition"),
     95L
   )
 })
 
-test_that("count_library_detected_genes() counts the correct number of detected genes in each sample", {
+test_that("count_library_detected_genes() counts detected genes in each library when no `sizeFactors`", {
+  dds <- random_dds()
+
   expect_equal(
-    count_library_detected_genes(DESeq2::estimateSizeFactors(random_dds())),
+    count_library_detected_genes(dds),
     library_detected_genes()
   )
 })
 
-test_that("count_library_detected_genes() counts the correct number of detected genes in each sample with low threshold", {
+test_that("count_library_detected_genes() counts detected genes in each library when `sizeFactors` available", {
+  dds <- DESeq2::estimateSizeFactors(random_dds())
+
   expect_equal(
-    count_library_detected_genes(DESeq2::estimateSizeFactors(random_dds()), threshold = 1),
+    count_library_detected_genes(dds),
+    library_detected_genes()
+  )
+})
+
+test_that("count_library_detected_genes() counts detected genes in each library with low threshold", {
+  dds <- DESeq2::estimateSizeFactors(random_dds())
+
+  expect_equal(
+    count_library_detected_genes(dds, threshold = 1),
     library_detected_genes_low_thresh()
   )
 })
