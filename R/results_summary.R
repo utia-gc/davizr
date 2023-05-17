@@ -1,3 +1,32 @@
+#' Plot results summary data
+#'
+#' @param res A `DESeqResults` object.
+#'
+#' @return A `ggplot` object.
+#' @export
+plot_results_summary <- function(res) {
+  res %>%
+    extract_results_summary_data() %>%
+    as.data.frame() %>%
+    dplyr::mutate(
+      percent_label = paste0(percent_not_all_zeros, "%"),
+      degs = dplyr::case_when(
+        category %in% c("up", "down") ~ TRUE,
+        category %in% c("outliers", "low counts", "all zeros") ~ FALSE
+      )
+    ) %>%
+    ggplot2::ggplot(ggplot2::aes(x = category, y = count)) +
+    ggplot2::geom_col() +
+    ggplot2::geom_text(ggplot2::aes(label = count), vjust = -0.2) +
+    ggplot2::geom_text(ggplot2::aes(label = percent_label), vjust = 1.5, color = "white") +
+    ggplot2::facet_grid(~degs, scales = "free_x") +
+    ggplot2::theme(
+      strip.background = ggplot2::element_blank(),
+      strip.text.x = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank()
+    )
+}
+
 #' Extract summary data for `DESeqResults`
 #'
 #' @description This is essentially a rewrite of `DESeq2::summary()` that returns
