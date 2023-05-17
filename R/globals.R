@@ -1,3 +1,3 @@
 utils::globalVariables(c(
-  "sample_name", "detected_genes"
+  "category", "count", "detected_genes", "percent_not_all_zeros", "sample_name"
 ))

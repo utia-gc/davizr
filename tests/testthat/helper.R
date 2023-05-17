@@ -1,3 +1,11 @@
+example_dds <- function(...) {
+  withr::with_seed(
+    2023,
+    DESeq2::makeExampleDESeqDataSet(betaSD = 0.75, ...) %>%
+      DESeq2::DESeq(quiet = TRUE)
+  )
+}
+
 counts_matrix <- function() {
   matrix(
     rep(0, 16), ncol = 2,
@@ -48,4 +56,21 @@ library_detected_genes_low_thresh <- function() {
   names(x) <- paste0("sample", 1:8)
 
   return(x)
+}
+
+results_summary_data <- function() {
+  metadata <- list(
+    alpha = 0.05,
+    lfc_threshold = 0,
+    filter_threshold = 3.37
+  )
+  df <- S4Vectors::DataFrame(
+    category = c("up", "down", "outliers", "low counts", "all zeros"),
+    count = c(66, 62, 2, 154, 0),
+    percent_total = c(6.6, 6.2, 0.2, 15.4, 0),
+    percent_not_all_zeros = c(6.6, 6.2, 0.2, 15.4, NA)
+  )
+  S4Vectors::metadata(df) <- metadata
+
+  df
 }
