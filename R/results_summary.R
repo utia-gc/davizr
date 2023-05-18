@@ -9,7 +9,9 @@ plot_results_summary <- function(res) {
     extract_results_summary_data() %>%
     as.data.frame() %>%
     dplyr::mutate(
-      percent_label = paste0(percent_not_all_zeros, "%"),
+      percent_label = percent_not_all_zeros %>%
+        round(2) %>%
+        paste0("%"),
       degs = dplyr::case_when(
         category %in% c("up", "down") ~ TRUE,
         category %in% c("outliers", "low counts", "all zeros") ~ FALSE
