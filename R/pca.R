@@ -31,6 +31,19 @@ perform_pca <- function(object, ntop = 500) {
   pca_df
 }
 
+#' Access prcomp from a PCA DFrame
+#'
+#' @description An accessor method for getting the `prcomp` object from a PCA DFrame
+#'   such as that produced by [perform_pca()]
+#'
+#' @param pca_dframe A `Dframe` of PCA data
+#'
+#' @return A `prcomp` object
+#' @export
+get_prcomp <- function(pca_dframe) {
+  S4Vectors::metadata(pca_dframe)$prcomp
+}
+
 #' Prepare input matrix for PCA
 #'
 #' @inheritParams perform_pca

@@ -24,3 +24,12 @@ test_that("perform_pca() returns DFrame with prcomp object from 100 genes", {
     vsd_pca_data_100()
   )
 })
+
+test_that("get_prcomp() accesses the prcomp object in a PCA DFrame", {
+  pca <- S4Vectors::metadata(vsd_pca_data_100())$prcomp
+
+  expect_equal(
+    get_prcomp(vsd_pca_data_100()),
+    pca
+  )
+})
