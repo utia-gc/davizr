@@ -74,3 +74,96 @@ results_summary_data <- function() {
 
   df
 }
+
+vsd_pca_data <- function() {
+  object <- DESeq2::varianceStabilizingTransformation(example_dds())
+
+  ntop <- 500
+
+  row_vars <- MatrixGenerics::rowVars(SummarizedExperiment::assay(object))
+  select <- order(row_vars, decreasing = TRUE)[seq_len(min(ntop, length(row_vars)))]
+
+  pca <- stats::prcomp(t(SummarizedExperiment::assay(object)[select, ]))
+
+  x <- pca$x %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample_name")
+
+  col_data <- object %>%
+    SummarizedExperiment::colData() %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample_name")
+
+  pca_df <- dplyr::full_join(
+    col_data,
+    x,
+    by = "sample_name"
+  ) %>%
+    tibble::column_to_rownames(var = "sample_name") %>%
+    S4Vectors::DataFrame()
+  S4Vectors::metadata(pca_df)$prcomp <- pca
+
+  pca_df
+}
+
+vsd_pca_data_100 <- function() {
+  object <- DESeq2::varianceStabilizingTransformation(example_dds())
+
+  ntop <- 100
+
+  row_vars <- MatrixGenerics::rowVars(SummarizedExperiment::assay(object))
+  select <- order(row_vars, decreasing = TRUE)[seq_len(min(ntop, length(row_vars)))]
+
+  pca <- stats::prcomp(t(SummarizedExperiment::assay(object)[select, ]))
+
+  x <- pca$x %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample_name")
+
+  col_data <- object %>%
+    SummarizedExperiment::colData() %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample_name")
+
+  pca_df <- dplyr::full_join(
+    col_data,
+    x,
+    by = "sample_name"
+  ) %>%
+    tibble::column_to_rownames(var = "sample_name") %>%
+    S4Vectors::DataFrame()
+  S4Vectors::metadata(pca_df)$prcomp <- pca
+
+  pca_df
+}
+
+rld_pca_data <- function() {
+  object <- DESeq2::rlog(example_dds())
+
+  ntop <- 500
+
+  row_vars <- MatrixGenerics::rowVars(SummarizedExperiment::assay(object))
+  select <- order(row_vars, decreasing = TRUE)[seq_len(min(ntop, length(row_vars)))]
+
+  pca <- stats::prcomp(t(SummarizedExperiment::assay(object)[select, ]))
+
+  x <- pca$x %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample_name")
+
+  col_data <- object %>%
+    SummarizedExperiment::colData() %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample_name")
+
+  pca_df <- dplyr::full_join(
+    col_data,
+    x,
+    by = "sample_name"
+  ) %>%
+    tibble::column_to_rownames(var = "sample_name") %>%
+    S4Vectors::DataFrame()
+  S4Vectors::metadata(pca_df)$prcomp <- pca
+
+  pca_df
+}

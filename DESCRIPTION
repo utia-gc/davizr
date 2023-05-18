@@ -22,6 +22,7 @@ Imports:
     dplyr,
     ggplot2,
     magrittr,
+    MatrixGenerics,
     purrr,
     S4Vectors,
     stringr,
