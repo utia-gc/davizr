@@ -43,3 +43,13 @@ test_that("get_variance_explained() accesses the variance_explained df in a PCA 
     variance_explained
   )
 })
+
+test_that("plot_scree() makes a scree plot from a PCA DFrame", {
+  pca <- rld_pca_data()
+  p <- plot_scree(pca)
+
+  vdiffr::expect_doppelganger(
+    "rld scree plot",
+    p
+  )
+})

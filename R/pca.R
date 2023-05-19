@@ -1,3 +1,26 @@
+#' Make a scree plot for a PCA DFrame
+#'
+#' @param pca_df A `Dframe` of PCA data
+#'
+#' @return A ggplot object scree plot
+#' @export
+plot_scree <- function(pca_df) {
+  pca_df %>%
+    get_variance_explained() %>%
+    ggplot2::ggplot(ggplot2::aes(x = principal_component)) +
+    ggplot2::geom_col(ggplot2::aes(y = proportion_var)) +
+    ggplot2::geom_line(ggplot2::aes(y = cumulative_proportion_var)) +
+    ggplot2::geom_point(ggplot2::aes(y = cumulative_proportion_var)) +
+    ggplot2::scale_x_continuous(
+      name = "Principal component",
+      breaks = scales::breaks_pretty()
+    ) +
+    ggplot2::scale_y_continuous(
+      name = "Proportion variance",
+      sec.axis = ggplot2::sec_axis(trans = ~.*1, name = "Cumulative proportion variance")
+    )
+}
+
 #' Perform PCA and return data for transformed data
 #'
 #' @inheritParams DESeq2::plotPCA

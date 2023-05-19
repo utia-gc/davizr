@@ -25,6 +25,7 @@ Imports:
     MatrixGenerics,
     purrr,
     S4Vectors,
+    scales,
     stringr,
     SummarizedExperiment,
     tibble
