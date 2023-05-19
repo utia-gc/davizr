@@ -33,3 +33,13 @@ test_that("get_prcomp() accesses the prcomp object in a PCA DFrame", {
     pca
   )
 })
+
+test_that("get_variance_explained() accesses the variance_explained df in a PCA DFrame", {
+  vsd <- vsd_pca_data_100()
+  variance_explained <- S4Vectors::metadata(vsd)$variance_explained
+
+  expect_equal(
+    get_variance_explained(vsd),
+    variance_explained
+  )
+})

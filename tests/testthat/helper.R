@@ -102,8 +102,13 @@ vsd_pca_data <- function() {
     tibble::column_to_rownames(var = "sample_name") %>%
     S4Vectors::DataFrame()
   S4Vectors::metadata(pca_df)$prcomp <- pca
+  S4Vectors::metadata(pca_df)$variance_explained <- data.frame(
+    principal_component = seq_len(length(pca$sdev)),
+    proportion_var = pca$sdev^2 / sum(pca$sdev^2),
+    cumulative_proportion_var = cumsum(pca$sdev^2 / sum(pca$sdev^2))
+  )
 
-  pca_df
+  return(pca_df)
 }
 
 vsd_pca_data_100 <- function() {
@@ -133,8 +138,13 @@ vsd_pca_data_100 <- function() {
     tibble::column_to_rownames(var = "sample_name") %>%
     S4Vectors::DataFrame()
   S4Vectors::metadata(pca_df)$prcomp <- pca
+  S4Vectors::metadata(pca_df)$variance_explained <- data.frame(
+    principal_component = seq_len(length(pca$sdev)),
+    proportion_var = pca$sdev^2 / sum(pca$sdev^2),
+    cumulative_proportion_var = cumsum(pca$sdev^2 / sum(pca$sdev^2))
+  )
 
-  pca_df
+  return(pca_df)
 }
 
 rld_pca_data <- function() {
@@ -164,6 +174,11 @@ rld_pca_data <- function() {
     tibble::column_to_rownames(var = "sample_name") %>%
     S4Vectors::DataFrame()
   S4Vectors::metadata(pca_df)$prcomp <- pca
+  S4Vectors::metadata(pca_df)$variance_explained <- data.frame(
+    principal_component = seq_len(length(pca$sdev)),
+    proportion_var = pca$sdev^2 / sum(pca$sdev^2),
+    cumulative_proportion_var = cumsum(pca$sdev^2 / sum(pca$sdev^2))
+  )
 
-  pca_df
+  return(pca_df)
 }

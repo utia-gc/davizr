@@ -27,6 +27,7 @@ perform_pca <- function(object, ntop = 500) {
     tibble::column_to_rownames(var = "sample_name") %>%
     S4Vectors::DataFrame()
   S4Vectors::metadata(pca_df)$prcomp <- pca
+  S4Vectors::metadata(pca_df)$variance_explained <- generate_variance_explained_summary(pca)
 
   pca_df
 }
@@ -42,6 +43,35 @@ perform_pca <- function(object, ntop = 500) {
 #' @export
 get_prcomp <- function(pca_dframe) {
   S4Vectors::metadata(pca_dframe)$prcomp
+}
+
+#' Access variance explained from a PCA DFrame
+#'
+#' @description An accessor method for getting the variance explained data from
+#'   a PCA DFrame such as that produced by [perform_pca()]
+#'
+#' @inheritParams get_prcomp
+#'
+#' @return A data frame with the proportion of variance explained and cumulative
+#'   proportion of variance explained for each principal component.
+#' @export
+get_variance_explained <- function(pca_dframe) {
+  S4Vectors::metadata(pca_dframe)$variance_explained
+}
+
+#' Generate a summary of variance explained by PCA
+#'
+#' @param prcomp A `prcomp` object
+#'
+#' @return A data frame with the proportion of variance explained and cumulative
+#'   proportion of variance explained for each principal component.
+#' @noRd
+generate_variance_explained_summary <- function(prcomp) {
+  data.frame(
+    principal_component = seq_len(length(prcomp$sdev)),
+    proportion_var = prcomp$sdev^2 / sum(prcomp$sdev^2),
+    cumulative_proportion_var = cumsum(prcomp$sdev^2 / sum(prcomp$sdev^2))
+  )
 }
 
 #' Prepare input matrix for PCA
