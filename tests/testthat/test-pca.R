@@ -53,3 +53,33 @@ test_that("plot_scree() makes a scree plot from a PCA DFrame", {
     p
   )
 })
+
+test_that("plot_biplot() plots first two principal components by default", {
+  pca <- rld_pca_data()
+  p <- plot_biplot(pca)
+
+  vdiffr::expect_doppelganger(
+    "rld biplot",
+    p
+  )
+})
+
+test_that("plot_biplot() plots supplied principal components", {
+  pca <- rld_pca_data()
+  p <- plot_biplot(pca, x = PC2, y = PC4)
+
+  vdiffr::expect_doppelganger(
+    "rld biplot PC4 vs PC2",
+    p
+  )
+})
+
+test_that("plot_biplot() applies aesthetic mappings to points", {
+  pca <- rld_pca_data()
+  p <- plot_biplot(pca, point_mapping = ggplot2::aes(color = sizeFactor, shape = condition))
+
+  vdiffr::expect_doppelganger(
+    "rld biplot colored sizeFactor shaped condition",
+    p
+  )
+})

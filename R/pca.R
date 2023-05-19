@@ -1,3 +1,46 @@
+#' Make a biplot for a PCA DFrame
+#'
+#' @inheritParams plot_scree
+#' @param x Principal component to plot along x axis
+#' @param y Prinicpal component to plot along y axis
+#' @param point_mapping A mapping aesthetic to pass to [ggplot2::geom_point].
+#'   Created by [ggplot2::aes].
+#'
+#' @return A ggplot object biplot.
+#' @export
+plot_biplot <- function(pca_df, x = PC1, y = PC2, point_mapping = NULL) {
+  pca_df %>%
+    as.data.frame() %>%
+    ggplot2::ggplot(ggplot2::aes(x = {{ x }}, y = {{ y }})) +
+    ggplot2::geom_point(mapping = point_mapping) +
+    ggplot2::labs(
+      x = make_percent_var_label(pca_df, {{ x }}),
+      y = make_percent_var_label(pca_df, {{ y }})
+    )
+}
+
+#' Make the label of percent variation for a particular principal component
+#'
+#' @inheritParams plot_biplot
+#' @param pc The principal component to make a label for
+#'
+#' @return A character vector of the principal component and its percent variation
+#' @noRd
+make_percent_var_label <- function(pca_df, pc) {
+  pc_string <- rlang::enquo(pc) %>%
+    rlang::as_label()
+
+  variance_explained <- pca_df %>%
+    get_variance_explained() %>%
+    dplyr::mutate(
+      pc = paste0("PC", principal_component)
+    ) %>%
+    tibble::column_to_rownames(var = "pc")
+  percent_variance <- variance_explained[pc_string, "proportion_var"] * 100
+
+  stringr::str_glue("{pc_string}: {round(percent_variance, 2)}% variation")
+}
+
 #' Make a scree plot for a PCA DFrame
 #'
 #' @param pca_df A `Dframe` of PCA data

@@ -24,6 +24,7 @@ Imports:
     magrittr,
     MatrixGenerics,
     purrr,
+    rlang,
     S4Vectors,
     scales,
     stringr,
