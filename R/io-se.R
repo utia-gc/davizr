@@ -1,5 +1,8 @@
 #' Write a `SummarizedExperiment` object to file as an RDS.
 #'
+#' This is essentially a thin wrapper around `saveRDS()` with additional logic
+#' for things like directory creation and control of overwriting files.
+#'
 #' @param se A `SummarizedExperiment`
 #' @param path A character path to write the `SummarizedExperiment` file to
 #' @param overwrite A logical controlling whether a file should be overwritten
@@ -24,26 +27,17 @@
 #'   write_se(se, path = "se.rds")
 #' }
 write_se <- function(se, path, overwrite = FALSE) {
+  # if file already exists at path and overwrite turned off print a warning and return
   if (file.exists(path) & !overwrite) {
     warn_no_overwrite(path)
     return(invisible(FALSE))
   }
 
+  # create the base directory if it doesn't already exist
+  mkdir_p(dirname(path))
+
+  # write the SummarizedExperiment as an RDS file
   saveRDS(object = se, file = path)
 
   return(invisible(TRUE))
-}
-
-
-#' Warn that a file was not overwritten
-#'
-#' @param path A character path to an existing file or directory
-#'
-#' @return (Invisible) `NULL`
-warn_no_overwrite <- function(path) {
-  msg <- glue::glue("file already exists at `{path}`, and `overwrite = FALSE`, so `{path}` not overwritten")
-
-  rlang::warn(message = msg, class = "warning_no_overwrite")
-
-  return(invisible())
 }

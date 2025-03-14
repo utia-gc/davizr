@@ -22,6 +22,30 @@ test_that("write_se() writes a SummarizedExperiment object to a file", {
 })
 
 
+test_that("write_se() writes a SummarizedExperiment object to a file when it needs to create the directory", {
+  # create SummarizedExperiment object
+  counts <- random_matrix()
+  col_data <- random_col_data()
+  se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(counts = counts),
+    colData = col_data
+  )
+
+  # set the file path to write the SE directly into a temp directory
+  dir <- withr::local_tempdir()
+  se_path <- file.path(dir, "summarized-experiment", "se.rds")
+
+  # test that write_se returns TRUE for success and created a file at the correct path
+  expect_false(file.exists(se_path))
+  expect_no_warning(
+    written <- write_se(se, path = se_path)
+  )
+  expect_true(written)
+  expect_true(file.exists(se_path))
+  expect_s4_class(readRDS(se_path), "SummarizedExperiment")
+})
+
+
 test_that("write_se() throws a warning when overwrite set to false and file already exists at path", {
   # create SummarizedExperiment object
   counts <- random_matrix()

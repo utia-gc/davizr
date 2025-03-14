@@ -19,7 +19,8 @@ if \code{path} already exists}
 written to \code{path}
 }
 \description{
-Write a \code{SummarizedExperiment} object to file as an RDS.
+This is essentially a thin wrapper around \code{saveRDS()} with additional logic
+for things like directory creation and control of overwriting files.
 }
 \examples{
 # don't run
