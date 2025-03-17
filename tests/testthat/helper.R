@@ -34,6 +34,13 @@ random_dds <- function() {
   )
 }
 
+random_se <- function() {
+  SummarizedExperiment::SummarizedExperiment(
+    assays = list(counts = random_matrix()),
+    colData = random_col_data()
+  )
+}
+
 library_detected_genes <- function() {
   x <- c(97, 95, 93, 95, 91, 89, 95, 95)
   names(x) <- paste0("sample", 1:8)
