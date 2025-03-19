@@ -35,10 +35,15 @@ random_dds <- function() {
 }
 
 random_se <- function() {
-  SummarizedExperiment::SummarizedExperiment(
+  # construct SummarizedExperiment
+  se <- SummarizedExperiment::SummarizedExperiment(
     assays = list(counts = random_matrix()),
     colData = random_col_data()
   )
+  # add library size variable
+  se <- add_library_size(se)
+
+  return(se)
 }
 
 library_detected_genes <- function() {

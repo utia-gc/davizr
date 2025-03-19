@@ -5,13 +5,16 @@
 \title{Construct a \code{SummarizedExperiment} from a counts matrix and sample data data
 frame}
 \usage{
-construct_se(counts, samples, ...)
+construct_se(counts, samples, library_size_var = "library_size", ...)
 }
 \arguments{
 \item{counts}{An integer matrix with genes as rows and samples as columns.
 Row names are gene names. Column names are sample names.}
 
 \item{samples}{A data frame of samples data. Row names are sample names.}
+
+\item{library_size_var}{A character vector name for the library size
+variable. If \code{NULL}, library size is not computed.}
 
 \item{...}{Additional arguments passed to
 \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.}
@@ -29,4 +32,8 @@ required to construct the \code{SummarizedExperiment} object.
 intersection of counts matrix column names and sample data row names, then
 constructs a \code{SummarizedExperiment} object from the subset of the counts
 matrix and sample data.
+
+\code{construct_se()} by default adds a variable to the sample data for library
+size, that is, the column sums of the counts matrix. Controlled by
+the \code{library_size_var} argument.
 }

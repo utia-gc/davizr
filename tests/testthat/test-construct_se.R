@@ -5,6 +5,9 @@ test_that("construct_se() makes the correct SummarizedExperiment when counts col
   )
   expect_s4_class(se, "SummarizedExperiment")
   expect_equal(se, random_se())
+  # library size variable is correct
+  expect_in("library_size", colnames(SummarizedExperiment::colData(se)))
+  expect_true(is.numeric(se[["library_size"]]))
 })
 
 
@@ -19,6 +22,9 @@ test_that("construct_se() makes the correct SummarizedExperiment when counts col
   )
   expect_s4_class(se, "SummarizedExperiment")
   expect_equal(se, random_se())
+  # library size variable is correct
+  expect_in("library_size", colnames(SummarizedExperiment::colData(se)))
+  expect_true(is.numeric(se[["library_size"]]))
 })
 
 
@@ -33,6 +39,9 @@ test_that("construct_se() makes the correct SummarizedExperiment when counts has
   )
   expect_s4_class(se, "SummarizedExperiment")
   expect_equal(se, random_se())
+  # library size variable is correct
+  expect_in("library_size", colnames(SummarizedExperiment::colData(se)))
+  expect_true(is.numeric(se[["library_size"]]))
 })
 
 
@@ -47,6 +56,9 @@ test_that("construct_se() makes the correct SummarizedExperiment when samples ha
   )
   expect_s4_class(se, "SummarizedExperiment")
   expect_equal(se, random_se())
+  # library size variable is correct
+  expect_in("library_size", colnames(SummarizedExperiment::colData(se)))
+  expect_true(is.numeric(se[["library_size"]]))
 })
 
 
@@ -62,4 +74,38 @@ test_that("construct_se() errors when counts and colData have no samples in comm
     ),
     class = "error_no_common_samples"
   )
+})
+
+
+test_that("construct_se() makes the correct SummarizedExperiment with correct library size variable", {
+  # create expected objects for testing
+  se_expected <- random_se()
+  se_expected[["library_size_raw"]] <- se_expected[["library_size"]]
+  se_expected[["library_size"]] <- NULL
+
+  # test that the SummarizedExperiment object is created as expected
+  expect_no_error(
+    se <- construct_se(counts = random_matrix(), samples = random_col_data(), library_size_var = "library_size_raw")
+  )
+  expect_s4_class(se, "SummarizedExperiment")
+  expect_equal(se, se_expected)
+  # custom library size variable is correct
+  expect_in("library_size_raw", colnames(SummarizedExperiment::colData(se)))
+  expect_true(is.numeric(se[["library_size_raw"]]))
+})
+
+
+test_that("construct_se() makes the correct SummarizedExperiment without library size variable when `library_size_var = NULL`", {
+  # create expected objects for testing
+  se_expected <- random_se()
+  se_expected[["library_size"]] <- NULL
+
+  # test that the SummarizedExperiment object is created as expected
+  expect_no_error(
+    se <- construct_se(counts = random_matrix(), samples = random_col_data(), library_size_var = NULL)
+  )
+  expect_s4_class(se, "SummarizedExperiment")
+  expect_equal(se, se_expected)
+  # custom library size variable is correct
+  expect_false("library_size" %in% colnames(SummarizedExperiment::colData(se)))
 })
