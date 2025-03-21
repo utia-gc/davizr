@@ -5,7 +5,15 @@
 \title{Construct a \code{SummarizedExperiment} from a counts matrix and sample data data
 frame}
 \usage{
-construct_se(counts, samples, library_size_var = "library_size", ...)
+construct_se(
+  counts,
+  samples,
+  library_size_var = "library_size",
+  interest_variables = NULL,
+  nuisance_variables = NULL,
+  screening_variables = NULL,
+  ...
+)
 }
 \arguments{
 \item{counts}{An integer matrix with genes as rows and samples as columns.
@@ -16,6 +24,9 @@ Row names are gene names. Column names are sample names.}
 \item{library_size_var}{A character vector name for the library size
 variable. If \code{NULL}, library size is not computed.}
 
+\item{interest_variables, nuisance_variables, screening_variables}{Character
+vectors of variables to add to the modeling variables \code{metadata} slot.}
+
 \item{...}{Additional arguments passed to
 \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.}
 }
@@ -23,10 +34,14 @@ variable. If \code{NULL}, library size is not computed.}
 A \code{SummarizedExperiment} object. \code{counts} assay contains counts data.
 }
 \description{
-\code{construct_se()} is essentially a wrapper around
-\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} that offers additional
-validation of sample order in the counts matrix and samples data as
-required to construct the \code{SummarizedExperiment} object.
+Construct a \code{SummarizedExperiment} from a counts matrix and sample data data
+frame
+}
+\details{
+Additional details... \code{construct_se()} is essentially a wrapper
+around \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} that offers
+additional validation of sample order in the counts matrix and samples data
+as required to construct the \code{SummarizedExperiment} object.
 
 \code{construct_se()} subsets the counts matrix and column data by the sorted
 intersection of counts matrix column names and sample data row names, then
@@ -34,6 +49,10 @@ constructs a \code{SummarizedExperiment} object from the subset of the counts
 matrix and sample data.
 
 \code{construct_se()} by default adds a variable to the sample data for library
-size, that is, the column sums of the counts matrix. Controlled by
-the \code{library_size_var} argument.
+size, that is, the column sums of the counts matrix. Controlled by the
+\code{library_size_var} argument.
+
+The character vectors in \code{interest_variables}, \code{nuisance_variables}, and
+\code{screening_variables} must all be names of variables available in the
+sample data. Otherwise, an \code{error_no_sample_variable} is thrown.
 }

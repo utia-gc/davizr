@@ -18,11 +18,13 @@ Imports:
     apeglm,
     BiocGenerics,
     cli,
+    ComplexHeatmap,
     data.table,
     DESeq2,
     dplyr,
     DT,
     edgeR,
+    GGally,
     ggplot2,
     glue,
     janitor,
@@ -36,4 +38,5 @@ Imports:
     stringr,
     SummarizedExperiment,
     tibble,
-    tidyselect
+    tidyselect,
+    variancePartition
