@@ -146,3 +146,68 @@ abort_no_modeling_variables <- function(se) {
     class = "error_no_modeling_variables"
   )
 }
+
+
+#' Throw an error when `SummarizedExperiment` does not contain a requested assay
+#'
+#' @param assay A character assay name that is not in the assay names of the
+#'   `SummarizedExperiment`
+#' @param se The `SummarizedExperiment` that does not contain the requested
+#'   `assay`
+#'
+#' @return An `rlang_error` of custom class `error_no_assay`
+#' @noRd
+abort_no_assay <- function(assay, se) {
+  msg <- c(
+    "Can't find assay {.arg {assay}} in assay names of {.arg {se}}.",
+    "i" = "Did you check for valid assays with {.code SummarizedExperiment::assayNames(se)}?"
+  )
+
+  cli::cli_abort(
+    message = msg,
+    class = "error_no_assay"
+  )
+}
+
+
+#' Set aesthetics metadata in a `SummarizedExperiment`
+#'
+#' @inheritParams write_se
+#' @param variable A character vector for the sample data variable to set
+#'   aesthetic values for.
+#' @param values A named vector mapping values in the sample data `variable` to
+#'   values of an aesthetic.
+#' @param aesthetic A vector indicating the aesthetic to set.
+#'
+#' @return The `SummarizedExperiment` with the aesthetics set in the metadata
+#'   slot.
+#' @export
+set_aesthetics <- function(se, variable, values, aesthetic = c("color", "shape")) {
+
+  # throw error if values isn't a named vector
+  if (is.null(names(values))) {
+    cli::cli_abort(
+      message = "{.arg values} must be a named vector.",
+      class = "error_unnamed_values"
+    )
+  }
+
+  variable_data <- se[[variable]]
+
+  # throw error if variable not in sample data
+  if (is.null(variable_data)) {
+    abort_no_sample_variable(var = variable, se = "se")
+  }
+  # throw error if value has a name that's not in the variable data
+  if (!all(names(values) %in% variable_data)) {
+    cli::cli_abort(
+      message = "Every name in {.arg values} must be present in se[[variable]].",
+      class = "error_invalid_variable_data"
+    )
+  }
+
+  S4Vectors::metadata(se)[["aesthetics"]][[aesthetic]][[variable]] <- values
+
+  return(se)
+}
+
