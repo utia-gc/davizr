@@ -31,8 +31,8 @@ perform_variance_partition_analysis <- function(se, assay, formula_name, ...) {
   variance_fractions <- do.call(
     variancePartition::fitExtractVarPartModel,
     c(vp_args, additional_vp_args)
-  ) |>
-    variancePartition::sortCols()
+  )
+  variance_fractions <- variancePartition::sortCols(variance_fractions)
 
   return(variance_fractions)
 }
