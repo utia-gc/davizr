@@ -20,27 +20,6 @@ get_samples_data <- function(se, rownames_var = "sample") {
 }
 
 
-#' Throw an error for a variable that does not exist in the sample data of a
-#' `SummarizedExperiment`
-#'
-#' @param var The sample data variable that does not exist in the
-#'   `SummarizedExperiment`
-#' @param se The `SummarizedExperiment` that does not contain the sample data
-#'   variable
-#'
-#' @return An `rlang_error` of custom class `error_no_sample_variable`
-abort_no_sample_variable <- function(var, se) {
-  msg <- c(
-    "Can't find variable {.var {var}} in sample data of {.var {se}}."
-  )
-
-  cli::cli_abort(
-    message = msg,
-    class = "error_no_sample_variable"
-  )
-}
-
-
 #' Set a modeling variable in the metadata of a `SummarizedExperiment`
 #'
 #' @details The character vectors in `values` must all be names of variables
@@ -129,47 +108,6 @@ get_modeling_explanatory_variables <- function(se) {
 }
 
 
-#' Throw an error when `SummarizedExperiment` has no modeling variables
-#'
-#' @param se The `SummarizedExperiment` that does not modeling variables
-#'   variable
-#'
-#' @return An `rlang_error` of custom class `error_no_modeling_variables`
-#' @export
-abort_no_modeling_variables <- function(se) {
-  msg <- c(
-    "Must have modeling variables in {.var {se}}."
-  )
-
-  cli::cli_abort(
-    message = msg,
-    class = "error_no_modeling_variables"
-  )
-}
-
-
-#' Throw an error when `SummarizedExperiment` does not contain a requested assay
-#'
-#' @param assay A character assay name that is not in the assay names of the
-#'   `SummarizedExperiment`
-#' @param se The `SummarizedExperiment` that does not contain the requested
-#'   `assay`
-#'
-#' @return An `rlang_error` of custom class `error_no_assay`
-#' @noRd
-abort_no_assay <- function(assay, se) {
-  msg <- c(
-    "Can't find assay {.arg {assay}} in assay names of {.arg {se}}.",
-    "i" = "Did you check for valid assays with {.code SummarizedExperiment::assayNames(se)}?"
-  )
-
-  cli::cli_abort(
-    message = msg,
-    class = "error_no_assay"
-  )
-}
-
-
 #' Set aesthetics metadata in a `SummarizedExperiment`
 #'
 #' @inheritParams write_se
@@ -209,5 +147,45 @@ set_aesthetics <- function(se, variable, values, aesthetic = c("color", "shape")
   S4Vectors::metadata(se)[["aesthetics"]][[aesthetic]][[variable]] <- values
 
   return(se)
+}
+
+
+#' Set a formula in the metadata of a `SummarizedExperiment`
+#'
+#' @inheritParams write_se
+#' @param name A character name for the formula.
+#' @param formula A formula
+#'
+#' @return The `SummarizedExperiment` with the formula added to the metadata
+#'   slot.
+#' @export
+set_formula <- function(se, name, formula) {
+
+  # throw error if a variable in the formula isn't a column in sample data
+  formula_variables <- all.vars(formula)
+  sample_data_variables <- colnames(get_samples_data(se))
+  if (!all(formula_variables %in% sample_data_variables)) {
+    invalid_sample_variables <- setdiff(formula_variables, sample_data_variables)
+    abort_no_sample_variable(var = invalid_sample_variables, se = "se")
+  }
+
+  # add the formula to the metadata slot for modeling formulas
+  S4Vectors::metadata(se)[["modeling"]][["formulas"]][[name]] <- formula
+
+  return(se)
+}
+
+
+#' Get a formula from the metadata of a `SummarizedExperiment` by its name
+#'
+#' @inheritParams set_formula
+#'
+#' @return The requested formula
+#' @export
+get_formula <- function(se, name) {
+
+  formula <- S4Vectors::metadata(se)[["modeling"]][["formulas"]][[name]]
+
+  return(formula)
 }
 
