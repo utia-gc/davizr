@@ -30,6 +30,7 @@ Imports:
     GGally,
     ggplot2,
     glue,
+    Hmisc,
     janitor,
     magrittr,
     MatrixGenerics,
