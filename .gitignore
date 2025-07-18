@@ -1,2 +1,6 @@
 .Rproj.user
 .Rhistory
+
+# ignore renv
+renv/
+renv.lock
