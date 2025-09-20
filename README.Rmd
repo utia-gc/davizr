@@ -27,10 +27,28 @@ knitr::opts_chunk$set(
 
 You can install the development version of davizr from [GitHub](https://github.com/) with:
 
-``` r
+```r
 # install.packages("devtools")
 devtools::install_github("trev-f/davizr")
 ```
+
+## Development
+
+Pull the repository from GitHub:
+
+```sh
+git pull utia-gc/davizr
+```
+
+Navigate into the repository and install development dependencies using `renv`:
+
+```r
+renv::install()
+```
+
+I recommend only using the `DESCRIPTION` file to maintain package state.
+`renv` should only be used for environment isolation.
+Don't use `renv::snapshot()` to maintain package state in the `renv.lock` file.
 
 ## Example
 
