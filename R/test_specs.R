@@ -57,7 +57,11 @@ get_lfc_threshold <- function(test_specs) {
 read_tests_yaml <- function(path) {
   # read tests data from YAML file
   tests_yaml <- yaml::read_yaml(path)[["tests"]]
-  # preallocate the list size based on the number of tests in the YAML file
+
+  # check contrasts key exists in test specs YAML
+  if (is.null(tests_yaml)) abort_malformed_test_specs_yaml(path)
+
+  #  preallocate the list size based on the number of tests in the YAML file
   tests_data <- vector("list", length = length(tests_yaml))
   # populate tests data with a list of test data for each test
   tests_names <- names(tests_yaml)
@@ -76,6 +80,10 @@ read_tests_yaml <- function(path) {
 read_contrasts_yaml <- function(path) {
   # read contrasts data from YAML
   contrasts_yaml <- yaml::read_yaml(path)[["contrasts"]]
+
+  # check contrasts key exists in test specs YAML
+  if (is.null(contrasts_yaml)) abort_malformed_test_specs_yaml(path)
+
   # preallocate the list size based on the number of contrasts in the YAML file
   contrasts_data <- vector("list", length = length(contrasts_yaml))
   # populate contrasts data with a list of contrast data for each contrast
@@ -96,5 +104,18 @@ abort_file_does_not_exist <- function(path) {
   cli::cli_abort(
     message = c("File {.path {path}} does not exist"),
     class = "error_file_does_not_exist"
+  )
+}
+
+
+abort_malformed_test_specs_yaml <- function(path) {
+  msg <- c(
+    "Test specs YAML file {.path {path}} is malformed.",
+    "i" = "Test specs YAML file must contain top level keys: {.field tests} and {.field contrasts}."
+  )
+
+  cli::cli_abort(
+    message = msg,
+    class = "error_malformed_test_specs_yaml"
   )
 }

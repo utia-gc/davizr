@@ -1,0 +1,6 @@
+tests:
+  Treated vs Untreated:
+    contrasts:
+      - treated_vs_untreated
+    description: "Difference between treated and untreated."
+
