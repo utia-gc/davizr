@@ -23,7 +23,7 @@ test_that("TestSpecs() with a valid test specs YAML file returns a TestSpecs obj
   expected_tests <- list(
     list(
       name = "Treated vs Untreated",
-      contrasts = c("treated_vs_untreated"),
+      contrast_names = c("treated_vs_untreated"),
       description = "Difference between treated and untreated."
     )
   )
