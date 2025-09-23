@@ -4,32 +4,9 @@
 
 TestSpecs <- function(path, alpha, lfc_threshold) {
   # read tests data from YAML
-  tests_yaml <- yaml::read_yaml(path)[["tests"]]
-  # preallocate the list size based on the number of tests in the YAML file
-  tests_data <- vector("list", length = length(tests_yaml))
-  # populate tests data with a list of test data for each test
-  tests_names <- names(tests_yaml)
-  for (i in 1:length(tests_yaml)) {
-    tests_data[[i]] <- list(
-      name = tests_names[[i]],
-      contrast_names = tests_yaml[[i]][["contrasts"]],
-      description = tests_yaml[[i]][["description"]]
-    )
-  }
-
+  tests_data <- read_tests_yaml(path)
   # read contrasts data from YAML
-  contrasts_yaml <- yaml::read_yaml(path)[["contrasts"]]
-  # preallocate the list size based on the number of contrasts in the YAML file
-  contrasts_data <- vector("list", length = length(contrasts_yaml))
-  # populate contrasts data with a list of contrast data for each contrast
-  contrasts_names <- names(contrasts_yaml)
-  for (i in 1:length(contrasts_yaml)) {
-    contrasts_data[[i]] <- list(
-      name = contrasts_names[[i]],
-      contrast = contrasts_yaml[[i]][["contrast"]],
-      description = contrasts_yaml[[i]][["description"]]
-    )
-  }
+  contrasts_data <- read_contrasts_yaml(path)
 
   # construct TestSpecs object
   test_specs <- new_TestSpecs(
@@ -81,4 +58,42 @@ get_lfc_threshold.TestSpecs <- function(test_specs) {
   lfc_threshold <- test_specs[["thresholds"]][["lfc"]]
 
   return(lfc_threshold)
+}
+
+
+read_tests_yaml <- function(path) {
+  # read tests data from YAML file
+  tests_yaml <- yaml::read_yaml(path)[["tests"]]
+  # preallocate the list size based on the number of tests in the YAML file
+  tests_data <- vector("list", length = length(tests_yaml))
+  # populate tests data with a list of test data for each test
+  tests_names <- names(tests_yaml)
+  for (i in 1:length(tests_yaml)) {
+    tests_data[[i]] <- list(
+      name = tests_names[[i]],
+      contrast_names = tests_yaml[[i]][["contrasts"]],
+      description = tests_yaml[[i]][["description"]]
+    )
+  }
+
+  return(tests_data)
+}
+
+
+read_contrasts_yaml <- function(path) {
+  # read contrasts data from YAML
+  contrasts_yaml <- yaml::read_yaml(path)[["contrasts"]]
+  # preallocate the list size based on the number of contrasts in the YAML file
+  contrasts_data <- vector("list", length = length(contrasts_yaml))
+  # populate contrasts data with a list of contrast data for each contrast
+  contrasts_names <- names(contrasts_yaml)
+  for (i in 1:length(contrasts_yaml)) {
+    contrasts_data[[i]] <- list(
+      name = contrasts_names[[i]],
+      contrast = contrasts_yaml[[i]][["contrast"]],
+      description = contrasts_yaml[[i]][["description"]]
+    )
+  }
+
+  return(contrasts_data)
 }
