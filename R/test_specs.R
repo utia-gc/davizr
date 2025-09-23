@@ -3,6 +3,9 @@
 
 
 TestSpecs <- function(path, alpha, lfc_threshold) {
+  # check that file at path exists
+  if (!file.exists(path)) abort_file_does_not_exist(path)
+
   # read tests data from YAML
   tests_data <- read_tests_yaml(path)
   # read contrasts data from YAML
@@ -96,4 +99,12 @@ read_contrasts_yaml <- function(path) {
   }
 
   return(contrasts_data)
+}
+
+
+abort_file_does_not_exist <- function(path) {
+  cli::cli_abort(
+    message = c("File {.path {path}} does not exist"),
+    class = "error_file_does_not_exist"
+  )
 }
