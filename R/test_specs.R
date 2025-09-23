@@ -40,24 +40,14 @@ new_TestSpecs <- function(tests, contrasts, alpha, lfc_threshold) {
 }
 
 
-get_alpha <- function(x, ...) {
-  UseMethod("get_alpha")
-}
-
-
-get_alpha.TestSpecs <- function(test_specs) {
+get_alpha <- function(test_specs) {
   alpha <- test_specs[["thresholds"]][["alpha"]]
 
   return(alpha)
 }
 
 
-get_lfc_threshold <- function(x, ...) {
-  UseMethod("get_lfc_threshold")
-}
-
-
-get_lfc_threshold.TestSpecs <- function(test_specs) {
+get_lfc_threshold <- function(test_specs) {
   lfc_threshold <- test_specs[["thresholds"]][["lfc"]]
 
   return(lfc_threshold)
