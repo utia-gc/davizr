@@ -63,3 +63,31 @@ test_that("TestSpecs() throws error when test specs YAML file does not exist", {
     class = "error_file_does_not_exist"
   )
 })
+
+
+test_that("TestSpecs() throws error when 'tests' key does not exist in test specs YAML file", {
+  # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-invalid-no_tests.yml")
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_malformed_test_specs_yaml"
+  )
+})
+
+
+test_that("TestSpecs() throws error when 'contrasts' key does not exist in test specs YAML file", {
+  # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-invalid-no_contrasts.yml")
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_malformed_test_specs_yaml"
+  )
+})
