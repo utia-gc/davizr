@@ -135,7 +135,7 @@ test_that("plot_cor_heatmap() returns a ComplexHeatmap for pearson correlation",
   se <- random_se()
   se <- set_aesthetics(se, variable = "condition", values = c("control" = "pink", "treat" = "black"), aesthetic = "color")
   se <- set_aesthetics(se, variable = "batch", values = c("1" = "blue", "2" = "green"), aesthetic = "color")
-  SummarizedExperiment::assay(se, "vsd") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vsd") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
 
   # expect runs successfully
   expect_no_error(
@@ -154,7 +154,7 @@ test_that("plot_cor_heatmap() returns a ComplexHeatmap for pearson correlation",
 test_that("plot_cor_heatmap() returns a ComplexHeatmap for Spearman correlation when SummarizedExperiment has no aesthetics", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vsd") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vsd") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
 
   # expect runs successfully
   expect_no_error(
@@ -307,7 +307,7 @@ test_that("plot_dist_heatmap() returns a ComplexHeatmap for manhattan distance",
   se <- random_se()
   se <- set_aesthetics(se, variable = "condition", values = c("control" = "pink", "treat" = "black"), aesthetic = "color")
   se <- set_aesthetics(se, variable = "batch", values = c("1" = "blue", "2" = "green"), aesthetic = "color")
-  SummarizedExperiment::assay(se, "vsd") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vsd") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
 
   # expect runs successfully
   expect_no_error(
@@ -326,7 +326,7 @@ test_that("plot_dist_heatmap() returns a ComplexHeatmap for manhattan distance",
 test_that("plot_dist_heatmap() returns a ComplexHeatmap for euclidean distance when SummarizedExperiment has no aesthetics", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vsd") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vsd") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
 
   # expect runs successfully
   expect_no_error(

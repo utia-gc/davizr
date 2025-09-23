@@ -13,7 +13,7 @@ test_that("perform_pca() throws 'error_no_assay' when specified assay not presen
 test_that("perform_pca() performs PCA", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
 
   # expect runs successfully
   expect_no_error(
@@ -33,7 +33,7 @@ test_that("perform_pca() performs PCA", {
 test_that("plot_scores() returns a plotly plot of PC scores for PC1 and PC2 by default", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -49,7 +49,7 @@ test_that("plot_scores() returns a plotly plot of PC scores for PC1 and PC2 by d
 test_that("plot_scores() returns a plotly plot of PC scores for PC1 and PC2 by default", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -65,7 +65,7 @@ test_that("plot_scores() returns a plotly plot of PC scores for PC1 and PC2 by d
 test_that("plot_scores() returns a plotly plot of PC scores for PC1 and PC2 by default when `plot_type = 'plotly'`", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -81,7 +81,7 @@ test_that("plot_scores() returns a plotly plot of PC scores for PC1 and PC2 by d
 test_that("plot_scores() returns a ggplot plot of PC scores for PC1 and PC2  when `plot_type = 'ggplot'`", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -102,7 +102,7 @@ test_that("plot_scores() returns a ggplot plot of PC scores for PC1 and PC2  whe
 test_that("plot_scores() returns a ggplot plot of PC scores for PC1 and PC2 with no margins plot when `plot_type = 'ggplot', margin_plot = 'none'`", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -125,7 +125,7 @@ test_that("plot_scores() returns a plotly plot with color and shape aesthetics s
   se <- random_se()
   se <- set_aesthetics(se, variable = "condition", values = c("control" = "pink", "treat" = "black"), aesthetic = "color")
   se <- set_aesthetics(se, variable = "batch", values = c("1" = 12, "2" = 8), aesthetic = "shape")
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -143,7 +143,7 @@ test_that("plot_scores() returns a ggplot plot with color and shape aesthetics s
   se <- random_se()
   se <- set_aesthetics(se, variable = "condition", values = c("control" = "pink", "treat" = "black"), aesthetic = "color")
   se <- set_aesthetics(se, variable = "batch", values = c("1" = 12, "2" = 8), aesthetic = "shape")
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -164,7 +164,7 @@ test_that("plot_scores() returns a ggplot plot with color and shape aesthetics s
 test_that("plot_scree() returns a plotly scree plot of cumulative and individual proportion variance explained for each PC by default", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -180,7 +180,7 @@ test_that("plot_scree() returns a plotly scree plot of cumulative and individual
 test_that("plot_scree() returns a plotly scree plot of cumulative and individual proportion variance explained for each PC by default when `plot_type = 'plotly'`", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
@@ -196,7 +196,7 @@ test_that("plot_scree() returns a plotly scree plot of cumulative and individual
 test_that("plot_scree() returns a ggplot2 scree plot of cumulative and individual proportion variance explained for each PC by default when `plot_type = 'ggplot'`", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vld") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vld") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   pca <- perform_pca(se, assay = "vld")
 
   # expect runs successfully
