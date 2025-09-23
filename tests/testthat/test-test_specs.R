@@ -91,3 +91,18 @@ test_that("TestSpecs() throws error when 'contrasts' key does not exist in test 
     class = "error_malformed_test_specs_yaml"
   )
 })
+
+
+test_that("TestSpecs() throws error when any contrast name in tests is not in contrasts", {
+  # create test specs object form path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-invalid-test_missing_contrast.yml")
+
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_contrast_name_not_in_contrasts"
+  )
+})

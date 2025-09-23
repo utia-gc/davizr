@@ -19,6 +19,9 @@ TestSpecs <- function(path, alpha, lfc_threshold) {
     lfc_threshold = lfc_threshold
   )
 
+  # validate
+  validate_TestSpecs(test_specs)
+
   return(test_specs)
 }
 
@@ -37,6 +40,35 @@ new_TestSpecs <- function(tests, contrasts, alpha, lfc_threshold) {
   )
 
   return(test_specs)
+}
+
+
+validate_TestSpecs <- function(test_specs) {
+  # validate that any contrast names listed in the `tests` field is present in the `contrasts` field
+  # build vector of contrast names
+  contrast_names <- c()
+  for (contrast in test_specs[["contrasts"]]) {
+    contrast_names <- append(contrast_names, contrast[["name"]])
+  }
+  # check that all contrast names in tests are also in contrast names
+  contrast_names_not_in_contrasts <- c()
+  for (test in test_specs[["tests"]]) {
+    contrast_names_not_in_contrasts <- append(contrast_names_not_in_contrasts, setdiff(test[["contrast_names"]], contrast_names))
+  }
+
+  if (length(contrast_names_not_in_contrasts) > 0) {
+    msg <- c(
+      "{.cls TestSpecs} has contrast names in {.field tests} that are not names in {.field contrasts}.",
+      "i" = "All contrast names listed in {.field tests} must be named contrasts in {.field contrasts}.",
+      "i" = "Problematic contrast names: {.str {contrast_names_not_in_contrasts}}."
+    )
+    cli::cli_abort(
+      message = msg,
+      class = "error_contrast_name_not_in_contrasts"
+    )
+  }
+
+  return(invisible(test_specs))
 }
 
 
