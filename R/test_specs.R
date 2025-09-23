@@ -2,6 +2,13 @@
 # Specify tests for differential analysis
 
 
+#' Specify tests for differential analysis
+#'
+#' @param path A character path to YAML of test specs
+#' @inheritParams new_TestSpecs
+#'
+#' @returns A `TestSpecs` object
+#' @export
 TestSpecs <- function(path, alpha, lfc_threshold) {
   # check that file at path exists
   if (!file.exists(path)) abort_file_does_not_exist(path)
@@ -26,6 +33,14 @@ TestSpecs <- function(path, alpha, lfc_threshold) {
 }
 
 
+#' Low level `TestSpecs` constructor
+#'
+#' @param tests A list of tests data
+#' @param contrasts A list of contrasts data
+#' @param alpha A numeric alpha threshold for differential features
+#' @param lfc_threshold A numeric log2 fold change threshold for differential features
+#'
+#' @returns A `TestSpecs` object
 new_TestSpecs <- function(tests, contrasts, alpha, lfc_threshold) {
   test_specs <- structure(
     list(
@@ -43,6 +58,11 @@ new_TestSpecs <- function(tests, contrasts, alpha, lfc_threshold) {
 }
 
 
+#' Validate a `TestSpecs` object
+#'
+#' @param test_specs A `TestSpecs` object
+#'
+#' @returns (Invisibly) a `TestSpecs` object
 validate_TestSpecs <- function(test_specs) {
   # validate that any contrast names listed in the `tests` field is present in the `contrasts` field
   # build vector of contrast names
@@ -72,6 +92,12 @@ validate_TestSpecs <- function(test_specs) {
 }
 
 
+#' Return alpha value of a `TestSpecs` object
+#'
+#' @param test_specs A `TestSpecs` object
+#'
+#' @returns A numeric alpha threshold
+#' @export
 get_alpha <- function(test_specs) {
   alpha <- test_specs[["thresholds"]][["alpha"]]
 
@@ -79,6 +105,12 @@ get_alpha <- function(test_specs) {
 }
 
 
+#' Return log2 fold change threshold of a `TestSpecs` object
+#'
+#' @param test_specs  A `TestSpecs` object
+#'
+#' @returns A numeric log2 fold change threshold
+#' @export
 get_lfc_threshold <- function(test_specs) {
   lfc_threshold <- test_specs[["thresholds"]][["lfc"]]
 
