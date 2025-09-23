@@ -49,3 +49,17 @@ test_that("TestSpecs() with a valid test specs YAML file returns a TestSpecs obj
     0
   )
 })
+
+
+test_that("TestSpecs() throws error when test specs YAML file does not exist", {
+  # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-nonexistent_file.yml")
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_file_does_not_exist"
+  )
+})
