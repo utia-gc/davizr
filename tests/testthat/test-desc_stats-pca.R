@@ -26,7 +26,7 @@ test_that("perform_pca() performs PCA", {
     c("scores", "variance_explained", "prcomp", "metadata")
   )
   # expect PCA is reproducible
-  expect_snapshot(pca)
+  expect_snapshot_value(pca, style = "serialize")
 })
 
 
