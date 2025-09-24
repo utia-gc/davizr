@@ -1,4 +1,4 @@
-# davizr (development version)
+# davizr 0.1.0
 
 # NEWS
 
