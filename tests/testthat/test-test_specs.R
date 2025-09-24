@@ -38,8 +38,19 @@ test_that("TestSpecs() with a valid test specs YAML file returns a TestSpecs obj
     )
   )
   expect_equal(test_specs[["contrasts"]], expected_contrasts)
+})
 
-  # test accessors
+
+test_that("TestSpecs accessors get expected data from TestSpecs object", {
+   # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-valid.yml")
+  test_specs <- TestSpecs(
+    test_specs_yaml,
+    alpha = 0.05,
+    lfc_threshold = 0
+  )
+
+  # test accessors for thresholds
   expect_equal(
     get_alpha(test_specs),
     0.05
@@ -47,6 +58,12 @@ test_that("TestSpecs() with a valid test specs YAML file returns a TestSpecs obj
   expect_equal(
     get_lfc_threshold(test_specs),
     0
+  )
+
+  # test accessors for contrasts data
+  expect_equal(
+    get_contrasts(test_specs),
+    c("treated_vs_untreated" = "conditiontreated - conditionuntreated")
   )
 })
 

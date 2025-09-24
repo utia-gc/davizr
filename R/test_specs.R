@@ -92,9 +92,27 @@ validate_TestSpecs <- function(test_specs) {
 }
 
 
-#' Return alpha value of a `TestSpecs` object
+#' Get all contrasts from a `TestSpecs` object
 #'
 #' @param test_specs A `TestSpecs` object
+#'
+#' @returns A named character vector. Names are contrast names, values are contrasts.
+#' @export
+get_contrasts <- function(test_specs) {
+  # build vector of contrast names
+  contrasts <- c()
+  for (contrast in test_specs[["contrasts"]]) {
+    named_contrast <- stats::setNames(contrast[["contrast"]], contrast[["name"]])
+    contrasts <- append(contrasts, named_contrast)
+  }
+
+  return(contrasts)
+}
+
+
+#' Return alpha value of a `TestSpecs` object
+#'
+#' @inheritParams get_contrasts
 #'
 #' @returns A numeric alpha threshold
 #' @export
@@ -107,7 +125,7 @@ get_alpha <- function(test_specs) {
 
 #' Return log2 fold change threshold of a `TestSpecs` object
 #'
-#' @param test_specs  A `TestSpecs` object
+#' @inheritParams get_contrasts
 #'
 #' @returns A numeric log2 fold change threshold
 #' @export
