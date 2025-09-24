@@ -66,11 +66,8 @@ new_TestSpecs <- function(tests, contrasts, alpha, lfc_threshold) {
 validate_TestSpecs <- function(test_specs) {
   # validate that any contrast names listed in the `tests` field is present in the `contrasts` field
   # build vector of contrast names
-  contrast_names <- c()
-  for (contrast in test_specs[["contrasts"]]) {
-    contrast_names <- append(contrast_names, contrast[["name"]])
-  }
-  # check that all contrast names in tests are also in contrast names
+  contrast_names <- names(get_contrasts(test_specs))
+ # check that all contrast names in tests are also in contrast names
   contrast_names_not_in_contrasts <- c()
   for (test in test_specs[["tests"]]) {
     contrast_names_not_in_contrasts <- append(contrast_names_not_in_contrasts, setdiff(test[["contrast_names"]], contrast_names))
