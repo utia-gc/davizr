@@ -107,6 +107,23 @@ get_contrasts <- function(test_specs) {
 }
 
 
+#' Get all contrasts from a `TestSpecs` object as a single data.frame
+#'
+#' @inheritParams get_contrasts
+#'
+#' @returns A data.frame with contrast names, contrasts, and descriptions.
+#' @export
+get_contrasts_table <- function(test_specs) {
+  # each individual list of contrast data into a data.frame, then stack those into a single data.frame
+  contrasts_table <- do.call(
+    rbind,
+    lapply(test_specs[["contrasts"]], list2DF)
+  )
+
+  return(contrasts_table)
+}
+
+
 #' Return alpha value of a `TestSpecs` object
 #'
 #' @inheritParams get_contrasts

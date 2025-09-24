@@ -61,9 +61,20 @@ test_that("TestSpecs accessors get expected data from TestSpecs object", {
   )
 
   # test accessors for contrasts data
-  expect_equal(
+  expect_mapequal(
     get_contrasts(test_specs),
     c("treated_vs_untreated" = "conditiontreated - conditionuntreated")
+  )
+  # test contrasts table
+  actual_contrasts_table <- get_contrasts_table(test_specs)
+  expected_contrasts_table <- data.frame(
+    name = c("treated_vs_untreated"),
+    contrast = c("conditiontreated - conditionuntreated"),
+    description = c("Difference between treated and untreated.")
+  )
+  expect_equal(
+    actual_contrasts_table,
+    expected_contrasts_table
   )
 })
 
