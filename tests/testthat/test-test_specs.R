@@ -76,6 +76,15 @@ test_that("TestSpecs accessors get expected data from TestSpecs object", {
     actual_contrasts_table,
     expected_contrasts_table
   )
+
+  # test accessors for tests data
+  actual_tests_table <- get_tests_table(test_specs)
+  expected_tests_table <- data.frame(
+    name = c("Treated vs Untreated"),
+    contrast_names = c("treated_vs_untreated"),
+    description = c("Difference between treated and untreated.")
+  )
+  expect_equal(actual_tests_table, expected_tests_table)
 })
 
 

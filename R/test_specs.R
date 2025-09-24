@@ -124,6 +124,31 @@ get_contrasts_table <- function(test_specs) {
 }
 
 
+#' Get all tests from a `TestSpecs` object as a single data.frame
+#'
+#' For any tests with more than one contrast name, contrast names are returned
+#' as a single pipe ('|') delimited string.
+#'
+#' @inheritParams get_contrasts
+#'
+#' @returns A data.frame with test names, contrast names, and descriptions.
+#' @export
+get_tests_table <- function(test_specs) {
+  # write a function that turns a test record into a well-formed row of a data.frame
+  test_to_df <- function(test) {
+    test[["contrast_names"]] <- paste(test[["contrast_names"]], sep = "|", collapse = "|")
+    test_df_row <- list2DF(test)
+
+    return (test_df_row)
+  }
+
+  do.call(
+    rbind,
+    lapply(test_specs[["tests"]], test_to_df)
+  )
+}
+
+
 #' Return alpha value of a `TestSpecs` object
 #'
 #' @inheritParams get_contrasts
