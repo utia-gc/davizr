@@ -28,7 +28,7 @@ variable. If \code{NULL}, library size is not computed.}
 vectors of variables to add to the modeling variables \code{metadata} slot.}
 
 \item{...}{Additional arguments passed to
-\code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.}
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.}
 }
 \value{
 A \code{SummarizedExperiment} object. \code{counts} assay contains counts data.
@@ -39,7 +39,7 @@ frame
 }
 \details{
 Additional details... \code{construct_se()} is essentially a wrapper
-around \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} that offers
+around \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} that offers
 additional validation of sample order in the counts matrix and samples data
 as required to construct the \code{SummarizedExperiment} object.
 

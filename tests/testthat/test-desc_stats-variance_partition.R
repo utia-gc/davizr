@@ -14,7 +14,7 @@ test_that("perform_variance_partition_analysis() throws 'error_no_assay' when sp
 test_that("perform_variance_partition_analysis() throws 'error_no_formula' when specified formula not present in SummarizedExperiment", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vsd") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vsd") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
 
   # expect throws error
   expect_error(
@@ -27,7 +27,7 @@ test_that("perform_variance_partition_analysis() throws 'error_no_formula' when 
 test_that("perform_variance_partition_analysis() performs a variance partitioning analysis", {
   # create objects for running tests
   se <- random_se()
-  SummarizedExperiment::assay(se, "vsd") <- DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts"))
+  SummarizedExperiment::assay(se, "vsd") <- suppressMessages(DESeq2::varianceStabilizingTransformation(SummarizedExperiment::assay(se, "counts")))
   se <- set_formula(se, name = "vp_explanatory", formula = ~ (1 | condition) + (1 | batch))
 
   # expect run successfully

@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 
-# ignore renv
-renv/
+# use DESCRIPTION file for single source of dependencies
+# renv is only used for environment isolation
 renv.lock
+

@@ -1,0 +1,145 @@
+# test-test_specs.R
+# Test functionality related to test specifications.
+
+test_that("TestSpecs() with a valid test specs YAML file returns a TestSpecs object with working accessors", {
+  # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-valid.yml")
+  test_specs <- TestSpecs(
+    test_specs_yaml,
+    alpha = 0.05,
+    lfc_threshold = 0
+  )
+
+  # test that TestSpecs class is returned
+  expect_s3_class(test_specs, "TestSpecs")
+
+  # test that TestSpecs has expected names
+  expect_setequal(
+    names(test_specs),
+    c("tests", "contrasts", "thresholds")
+  )
+
+  # test that tests field is a list of test records formatted as expected
+  expected_tests <- list(
+    list(
+      name = "Treated vs Untreated",
+      contrast_names = c("treated_vs_untreated"),
+      description = "Difference between treated and untreated."
+    )
+  )
+  expect_equal(test_specs[["tests"]], expected_tests)
+
+  # test that contrasts field is a list of contrast records formatted as expected
+  expected_contrasts <- list(
+    list(
+      name = "treated_vs_untreated",
+      contrast = "conditiontreated - conditionuntreated",
+      description = "Difference between treated and untreated."
+    )
+  )
+  expect_equal(test_specs[["contrasts"]], expected_contrasts)
+})
+
+
+test_that("TestSpecs accessors get expected data from TestSpecs object", {
+   # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-valid.yml")
+  test_specs <- TestSpecs(
+    test_specs_yaml,
+    alpha = 0.05,
+    lfc_threshold = 0
+  )
+
+  # test accessors for thresholds
+  expect_equal(
+    get_alpha(test_specs),
+    0.05
+  )
+  expect_equal(
+    get_lfc_threshold(test_specs),
+    0
+  )
+
+  # test accessors for contrasts data
+  expect_mapequal(
+    get_contrasts(test_specs),
+    c("treated_vs_untreated" = "conditiontreated - conditionuntreated")
+  )
+  # test contrasts table
+  actual_contrasts_table <- get_contrasts_table(test_specs)
+  expected_contrasts_table <- data.frame(
+    name = c("treated_vs_untreated"),
+    contrast = c("conditiontreated - conditionuntreated"),
+    description = c("Difference between treated and untreated.")
+  )
+  expect_equal(
+    actual_contrasts_table,
+    expected_contrasts_table
+  )
+
+  # test accessors for tests data
+  actual_tests_table <- get_tests_table(test_specs)
+  expected_tests_table <- data.frame(
+    name = c("Treated vs Untreated"),
+    contrast_names = c("treated_vs_untreated"),
+    description = c("Difference between treated and untreated.")
+  )
+  expect_equal(actual_tests_table, expected_tests_table)
+})
+
+
+test_that("TestSpecs() throws error when test specs YAML file does not exist", {
+  # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-nonexistent_file.yml")
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_file_does_not_exist"
+  )
+})
+
+
+test_that("TestSpecs() throws error when 'tests' key does not exist in test specs YAML file", {
+  # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-invalid-no_tests.yml")
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_malformed_test_specs_yaml"
+  )
+})
+
+
+test_that("TestSpecs() throws error when 'contrasts' key does not exist in test specs YAML file", {
+  # create test specs object from path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-invalid-no_contrasts.yml")
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_malformed_test_specs_yaml"
+  )
+})
+
+
+test_that("TestSpecs() throws error when any contrast name in tests is not in contrasts", {
+  # create test specs object form path to YAML
+  test_specs_yaml <- test_path("data", "test-specs", "test-specs-invalid-test_missing_contrast.yml")
+
+  expect_error(
+    test_specs <- TestSpecs(
+      test_specs_yaml,
+      alpha = 0.05,
+      lfc_threshold = 0
+    ),
+    class = "error_contrast_name_not_in_contrasts"
+  )
+})

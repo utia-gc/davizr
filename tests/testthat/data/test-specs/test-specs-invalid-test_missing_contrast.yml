@@ -1,0 +1,13 @@
+
+contrasts:
+  treated_vs_untreated:
+    contrast: "conditiontreated - conditionuntreated"
+    description: "Difference between treated and untreated."
+
+tests:
+  Treated vs Untreated:
+    contrasts:
+      - treated_vs_untreated
+      - paired_vs_single
+    description: "Difference between treated and untreated."
+

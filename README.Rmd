@@ -27,29 +27,27 @@ knitr::opts_chunk$set(
 
 You can install the development version of davizr from [GitHub](https://github.com/) with:
 
-``` r
+```r
 # install.packages("devtools")
 devtools::install_github("trev-f/davizr")
 ```
 
+## Development
 
-## Contribute
+Pull the repository from GitHub:
 
-Contributions are welcome to this open source project.
-
-To contribute, fork this repo and clone it locally.
-After making changes, open a pull request against the upstream repo, `utia-gc/davizr`.
-We will review it and merge any changes or leave feedback.
-
-### Development dependencies
-
-We recommend using `renv` to manage dependencies.
-
-To get started, first remove any traces of an existing `renv` project, then initialize a new project:
-
-``` r
-renv::deactivate(clean = TRUE)
-renv::init(bioconductor = TRUE)
+```sh
+git pull utia-gc/davizr
 ```
 
-When initializing the project, select option `1` for explicit mode to only install libraries declared in the DESCRIPTION file.
+Navigate into the repository and install development dependencies using `renv`:
+
+```r
+renv::install()
+```
+
+I recommend only using the `DESCRIPTION` file to maintain package state.
+`renv` should only be used for environment isolation.
+Don't use `renv::snapshot()` to maintain package state in the `renv.lock` file.
+
+## Example

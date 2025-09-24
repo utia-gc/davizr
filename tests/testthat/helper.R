@@ -1,3 +1,55 @@
+pasilla_se <- function() {
+  counts <- system.file(
+    "extdata",
+    "pasilla_gene_counts.tsv.gz",
+    package = "DESeq2",
+    mustWork = TRUE
+  ) |>
+    read.csv(sep = "\t", row.names = "gene_id") |>
+    as.matrix()
+
+  samples <- system.file(
+    "extdata",
+    "pasilla_sample_annotation.csv",
+    package = "DESeq2",
+    mustWork = TRUE
+  ) |>
+    read.csv(row.names = 1) |>
+    dplyr::select(c("condition", "type")) |>
+    dplyr::mutate(
+      condition = factor(condition, levels = c("untreated", "treated")),
+      type = factor(type)
+    )
+  # add a fake batch variable
+  samples[["batch"]] <- as.factor(c(LETTERS[1:3], LETTERS[1:4]))
+  rownames(samples) <- sub("fb", "", rownames(samples))
+
+  se <- construct_se(
+    counts = counts,
+    samples = samples,
+    library_size_var = "library_size_prefilter",
+    interest_variables = "condition",
+    nuisance_variables = "type",
+    screening_variables = "batch"
+  ) |>
+    # add formulae for modeling
+    set_formula(
+      name = "design",
+      as.formula("~ 0 + condition + type")
+    ) |>
+    set_formula(
+      name = "vp_explanatory",
+      as.formula("~ (1 | condition) + (1 | type)")
+    ) |>
+    set_formula(
+      name = "vp_all",
+      as.formula("~ (1 | condition) + (1 | type) + (1 | batch)")
+    )
+
+  return(se)
+}
+
+
 example_dds <- function(...) {
   withr::with_seed(
     2023,

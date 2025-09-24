@@ -217,16 +217,16 @@ plot_scree <- function(pca, plot_type = c("plotly", "ggplot")) {
     var_explained,
     ggplot2::aes(x = .data[["pc"]])
   ) +
-    ggplot2::geom_col(ggplot2::aes(y = proportion_var)) +
-    ggplot2::geom_line(ggplot2::aes(y = cumulative_proportion_var)) +
-    ggplot2::geom_point(ggplot2::aes(y = cumulative_proportion_var)) +
+    ggplot2::geom_col(ggplot2::aes(y = .data[["proportion_var"]])) +
+    ggplot2::geom_line(ggplot2::aes(y = .data[["cumulative_proportion_var"]])) +
+    ggplot2::geom_point(ggplot2::aes(y = .data[["cumulative_proportion_var"]])) +
     ggplot2::scale_x_continuous(
       name = "Principal compoment",
       breaks = scales::breaks_pretty()
     ) +
     ggplot2::scale_y_continuous(
       name = "Proportion variance",
-      sec.axis = ggplot2::sec_axis(trans = ~.*1, name = "Cumulative proportion variance")
+      sec.axis = ggplot2::sec_axis(transform = ~.*1, name = "Cumulative proportion variance")
     )
 
   # coerce the plot to the requested format
