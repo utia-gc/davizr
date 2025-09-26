@@ -1,6 +1,27 @@
 # utils-se_conditions.R
 # Signal conditions associated with SummarizedExperiment objects
 
+#' Throw an error for a sample(s) that does not exist in a
+#' `SummarizedExperiment`
+#'
+#' @param samples The sample name(s) that do not exist in the `SummarizedExperiment`
+#' @param se The `SummarizedExperiment` that does not contain the sample data variable
+#'
+#' @returns An `rlang_error` of custom class `error_no_sample`
+#' @noRd
+abort_no_sample <- function(samples, se) {
+  msg <- c(
+    "Sample name(s) not in column names of {.var {se}}",
+    "i" = "Every sample name must also be a column name in the {.var {se}}.",
+    "x" = "Nonexistent sample names: {.val {samples}}."
+  )
+
+  cli::cli_abort(
+    message = msg,
+    class = "error_no_sample"
+  )
+}
+
 
 #' Throw an error for a variable that does not exist in the sample data of a
 #' `SummarizedExperiment`
