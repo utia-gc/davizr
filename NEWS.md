@@ -1,3 +1,5 @@
+# davizr 0.2.1
+
 # davizr 0.2.0
 
 # davizr 0.1.0
