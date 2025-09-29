@@ -1,7 +1,9 @@
 # test-sample_exclusions.R
 # Test behaviors related to excluding samples from an analysis
 
-test_that("plot_sample_exclusions_heatmap plots a heatmap of excluded samples", {
+
+# plot_sample_exclusions_heatmap() ----------------------------------------
+test_that("plot_sample_exclusions_heatmap() plots a heatmap of excluded samples", {
   # construct inputs
   se <- random_se()
   # build list of samples to exclude
@@ -20,6 +22,25 @@ test_that("plot_sample_exclusions_heatmap plots a heatmap of excluded samples", 
 })
 
 
+test_that("plot_sample_exclusions_heatmap() plots a heatmap of excluded samples when there is only one exclusion reason", {
+  # construct inputs
+  se <- random_se()
+  # build list of samples to exclude
+  sample_exclusions <- list(
+    "Low depth" = c("sample1", "sample3")
+  )
+
+  # expect plotting is successful
+  expect_no_error(
+    sample_exclusions_heatmap <- plot_sample_exclusions_heatmap(se, sample_exclusions)
+  )
+  # expect returns plotly object
+  expect_s3_class(sample_exclusions_heatmap, "plotly")
+  expect_s3_class(sample_exclusions_heatmap, "htmlwidget")
+})
+
+
+# drop_excluded_samples() -------------------------------------------------
 test_that("drop_excluded_samples() drops excluded samples from a SummarizedExperiment", {
    # construct inputs
   se <- random_se()
@@ -39,6 +60,28 @@ test_that("drop_excluded_samples() drops excluded samples from a SummarizedExper
   expect_setequal(
     colnames(se),
     c("sample2", "sample4", "sample5", "sample6", "sample8")
+  )
+})
+
+
+test_that("drop_excluded_samples() drops excluded samples from a SummarizedExperiment when there is only one exclusion reason", {
+   # construct inputs
+  se <- random_se()
+  # build list of samples to exclude
+  sample_exclusions <- list(
+    "Low depth" = c("sample1", "sample3")
+  )
+
+  # expect sample dropping is successful
+  expect_no_error(
+    se <- drop_excluded_samples(se, sample_exclusions)
+  )
+  # expect filtered SummarizedExperiment is returned
+  expect_s4_class(se, "SummarizedExperiment")
+  expect_equal(ncol(se), 6L)
+  expect_setequal(
+    colnames(se),
+    c("sample2", "sample4", "sample5", "sample6", "sample7", "sample8")
   )
 })
 

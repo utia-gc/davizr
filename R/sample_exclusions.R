@@ -27,6 +27,7 @@ drop_excluded_samples <- function(se, sample_exclusions) {
   return(se)
 }
 
+
 #' Plot a heatmap of sample exclusions and the reasons for exclusions
 #'
 #' @param se A `SummarizedExperiment` object
@@ -45,7 +46,7 @@ plot_sample_exclusions_heatmap <- function(se, sample_exclusions) {
   rownames(binary_exclusions_all) <- colnames(se)
 
   # filter exclusions matrix to only those samples that are excluded for at least one reason
-  binary_exclusions <- binary_exclusions_all[rowSums(binary_exclusions_all) > 0, ]
+  binary_exclusions <- binary_exclusions_all[rowSums(binary_exclusions_all) > 0, , drop = FALSE]
   # convert to numeric matrix for plotting
   binary_exclusions[] <- apply(binary_exclusions, 2, as.numeric)
 
