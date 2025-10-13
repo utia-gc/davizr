@@ -7,6 +7,8 @@
 tbl_sample_data(se, interactive = TRUE)
 }
 \arguments{
+\item{se}{A \code{SummarizedExperiment}}
+
 \item{interactive}{A logical controlling whether to return an interactive
 data table with \code{\link[DT:datatable]{DT::datatable()}} or a \code{data.frame} from \link[tibble:tbl_df-class]{tibble::tbl_df}.}
 }

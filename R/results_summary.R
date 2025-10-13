@@ -216,3 +216,8 @@ extract_shrunken_results <- function(
     quiet = quiet
   )
 }
+
+
+#' Import a harmless object from apeglm to get rid of notes when running `check()`
+#' @importFrom apeglm apeglm
+NULL

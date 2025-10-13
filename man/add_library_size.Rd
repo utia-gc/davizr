@@ -7,6 +7,8 @@
 add_library_size(se, library_size_var = "library_size")
 }
 \arguments{
+\item{se}{A \code{SummarizedExperiment}}
+
 \item{library_size_var}{A character vector name for the library size
 variable.}
 }

@@ -6,6 +6,7 @@
 #'   Annotation position can be controlled by `annotations`.
 #'
 #' @inheritParams write_se
+#' @inheritParams ComplexHeatmap::Heatmap
 #' @param assay A character vector indicating the assay to compute correlation
 #'   for.
 #' @param method A character vector indicating the correlation method. Passed to
@@ -25,6 +26,7 @@ plot_cor_heatmap <- function(
     assay,
     method = c("pearson", "kendall", "spearman"),
     ...,
+    name = NULL,
     annotations = c("both", "top", "left", "none"),
     diagonal = c("remove", "as_is")
 ) {
@@ -47,7 +49,7 @@ plot_cor_heatmap <- function(
   # if the name keyword variable is given as an argument, use that
   # otherwise, generate one given the correlation method
   heatmap_name <- ifelse(
-    exists("name"),
+    !is.null(name),
     name,
     switch(
       method,
@@ -109,6 +111,7 @@ plot_dist_heatmap <- function(
     assay,
     method = c("euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski"),
     ...,
+    name = NULL,
     annotations = c("both", "top", "left", "none"),
     diagonal = c("remove", "as_is")
 ) {
@@ -130,7 +133,7 @@ plot_dist_heatmap <- function(
   # set heatmap name
   # if the name keyword variable is given as an argument, use that
   # otherwise, generate one given the correlation method
-  heatmap_name <- ifelse(exists("name"), name, method)
+  heatmap_name <- ifelse(!is.null(name), name, method)
 
   # top and left annotations
   top_anno <- switch(
@@ -266,9 +269,20 @@ construct_heatmap_annotation <- function(se, which = c("column", "row"), legends
 }
 
 
-#' Remove diagonal from [ComplexHeatmap::Heatmap]
+#' Remove diagonal from [ComplexHeatmap::Heatmap()]
+#'
+#' @description `remove_diagonal` is passed as the `cell_fun` argument to
+#' [ComplexHeatmap::Heatmap()].
+#'
+#' @param j column index
+#' @param i row index
+#' @param x x coordinate middle point
+#' @param y y coordinate middle point
+#' @param w cell width
+#' @param h cell height
+#' @param fill cell fill color
+#'
 #' @export
-#' @noRd
 remove_diagonal <- function(j, i, x, y, w, h, fill) {
   if(i == j) {
     grid::grid.rect(x, y, w, h, gp = grid::gpar(fill = "white", col = "white"))

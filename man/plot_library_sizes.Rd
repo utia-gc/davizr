@@ -7,6 +7,8 @@
 plot_library_sizes(se, library_size_var, interactive = TRUE)
 }
 \arguments{
+\item{se}{A \code{SummarizedExperiment}}
+
 \item{library_size_var}{A character of the variable in the
 \code{SummarizedExperiment} sample data to plot. This variable must exist in the
 \code{SummarizedExperiment} sample data.}

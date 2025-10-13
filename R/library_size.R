@@ -2,7 +2,7 @@
 #'
 #' Library size is computed as the column sums of the counts matrix.
 #'
-#' @inheritParams construct_se
+#' @inheritParams write_se
 #' @param library_size_var A character vector name for the library size
 #'   variable.
 #'
@@ -30,9 +30,9 @@ tbl_library_sizes <- function(counts, interactive = TRUE) {
   library_sizes <- counts |>
     colSums() |>
     tibble::enframe(name = "sample", value = "library_size") |>
-    dplyr::arrange(library_size) |>
+    dplyr::arrange(.data[["library_size"]]) |>
     dplyr::mutate(
-      library_size = prettyNum(library_size, big.mark = ",", scientific = FALSE)
+      library_size = prettyNum(.data[["library_size"]], big.mark = ",", scientific = FALSE)
     )
   colnames(library_sizes) <- c("Sample", "Library size")
 
@@ -46,7 +46,7 @@ tbl_library_sizes <- function(counts, interactive = TRUE) {
 
 #' Plot the library size for each sample
 #'
-#' @inheritParams construct_se
+#' @inheritParams write_se
 #' @param library_size_var A character of the variable in the
 #'   `SummarizedExperiment` sample data to plot. This variable must exist in the
 #'   `SummarizedExperiment` sample data.

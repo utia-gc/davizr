@@ -19,7 +19,7 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     apeglm,
-    BiocGenerics,
+    circlize,
     cli,
     ComplexHeatmap,
     data.table,
@@ -36,11 +36,14 @@ Imports:
     MatrixGenerics,
     plotly,
     purrr,
+    RColorBrewer,
     rlang,
     S4Vectors,
     scales,
     stringr,
     SummarizedExperiment,
     tibble,
+    tidyr,
     tidyselect,
-    variancePartition
+    variancePartition,
+    yaml

@@ -1,5 +1,6 @@
 #' Display table of sample data
 #'
+#' @inheritParams write_se
 #' @inheritParams tbl_library_sizes
 #'
 #' @return A table of sample data. Returns an interactive data table with

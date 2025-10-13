@@ -10,6 +10,7 @@ plot_cor_heatmap(
   assay,
   method = c("pearson", "kendall", "spearman"),
   ...,
+  name = NULL,
   annotations = c("both", "top", "left", "none"),
   diagonal = c("remove", "as_is")
 )
@@ -25,6 +26,8 @@ for.}
 supplied.}
 
 \item{...}{Other arguments passed to \link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap}.}
+
+\item{name}{Name of the heatmap. By default the heatmap name is used as the title of the heatmap legend.}
 
 \item{annotations}{A character vector indicating which column/row annotations
 to include.}
