@@ -50,6 +50,46 @@ pasilla_se <- function() {
 }
 
 
+#' Load varPartDEData as a `SummarizedExperiment` object
+#'
+#' @returns A `SummarizedExperiment` of the [variancePartition::varPartDEData]
+#'   dataset
+vp_de_se <- function() {
+  # read the varPartDEdata dataset from the variancePartition package
+  # loads the following:
+  # counts matrix as `countMatrix`
+  # and samples data as `metadata`
+  system.file(
+    "data",
+    "varPartDEdata.rda",
+    package = "variancePartition"
+  ) |>
+    load()
+
+  # filter genes by number of counts
+  isexpr <- rowSums(edgeR::cpm(countMatrix) > 0.1) >= 5
+
+  # cast samples data variables to factors
+  samples <- dplyr::mutate(
+    metadata,
+    Individual = as.factor(.data[["Individual"]]),
+    Disease = as.factor(.data[["Disease"]]),
+    Experiment = as.factor(.data[["Experiment"]]),
+    Sex = as.factor(.data[["Sex"]])
+  ) |>
+    janitor::clean_names()
+
+  # construct SummarizedExperiment
+  se <- construct_se(
+    counts = countMatrix[isexpr, ],
+    samples = samples,
+    library_size_var = "library_size_prefilter"
+  )
+
+  return(se)
+}
+
+
 example_dds <- function(...) {
   withr::with_seed(
     2023,
