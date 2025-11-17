@@ -10,7 +10,9 @@ test_that("run_dream() transforms w/ dream-voom, fits LMM w/ dream, and computes
   contrasts_matrix <- variancePartition::makeContrastsDream(
     formula = get_formula(se, "design"),
     data = SummarizedExperiment::colData(se),
-    contrasts = c("disease1 - disease0")
+    contrasts = c(
+      "disease1_vs_disease0" = "disease1 - disease0"
+    )
   )
 
   # test that dream workflow is successful
@@ -38,4 +40,18 @@ test_that("run_dream() transforms w/ dream-voom, fits LMM w/ dream, and computes
   # test that mixed model fit is expected output from dream + eBayes
   expect_s4_class(dream_wf_result[["fit_mm"]], "MArrayLM2")
   expect_lte(nrow(dream_wf_result[["se"]]), n_genes)
+
+  # test that differential expression analysis results can be extracted with `topTable()`
+  expect_no_condition(
+    disease_de_result <- variancePartition::topTable(
+      dream_wf_result$fit_mm,
+      coef = "disease1_vs_disease0",
+      number = 1,
+      sort.by = "B"
+    )
+  )
+  # test that a t-test was run
+  expect_contains(colnames(disease_de_result), "t")
+  # test that TDRKH is most significant gene
+  expect_equal(rownames(disease_de_result[1, ]), "ENST00000525790.1 gene=TDRKH")
 })
