@@ -1,3 +1,18 @@
+#' Run dream differential analysis workflow
+#'
+#' @param se A `SummarizedExperiment` object with a `"design"` formula set,
+#'   preferably by `set_formula(se, "design")`
+#' @param contrasts_matrix A contrasts matrix compatible with the design
+#'   formula.
+#'
+#' @returns A `list` of the dream workflow outputs comprising three fields:
+#'   - `voom_obj`: An `Elist` that is the return value of [variancePartition::voomWithDreamWeights()];
+#'   - `fit_mm`: An `MArrayLM` or `MArrayLM2` that is the return value of [variancePartition::dream()] followed by [variancePartition::eBayes,MArrayLM2-method];
+#'   - `se`: A `SummarizedExperiment` with genes that failed to converge during the model fitting excluded and the dream-voom transformed expression matrix in a `"voom_dream"` assay.
+#'
+#'   Errors
+#'   - `error_no_formula` if `get_formula(se, "design")` returns `NULL`.
+#' @export
 run_dream <- function(se, contrasts_matrix) {
   # get data for input to dream-voom
   formula <- get_formula(se, "design")
