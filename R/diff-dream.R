@@ -1,7 +1,8 @@
 run_dream <- function(se, contrasts_matrix) {
   # get data for input to dream-voom
-  formula = get_formula(se, "design")
-  samples_data = se |>
+  formula <- get_formula(se, "design")
+  if (is.null(formula)) abort_no_formula("design", "se")
+  samples_data <- se |>
     SummarizedExperiment::colData() |>
     as.data.frame()
 

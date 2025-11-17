@@ -1,6 +1,27 @@
 # test-diff_dream.R
 # Test dream pipeline
 
+test_that("run_dream() throws `error_no_formula` when design formula not set in `SummarizedExperiment`", {
+  # construct SummarizedExperiment w/ no design formula
+  n_genes <- 250L
+  se <- vp_de_se()[1:n_genes, ]
+  # make contrasts matrix
+  contrasts_matrix <- variancePartition::makeContrastsDream(
+    formula = as.formula("~ 0 + disease + (1 | individual)"),
+    data = SummarizedExperiment::colData(se),
+    contrasts = c(
+      "disease1_vs_disease0" = "disease1 - disease0"
+    )
+  )
+
+  # test that dream workflow throws error when `SummarizedExperiment` has no design formula
+  expect_error(
+    dream_wf_result <- run_dream(se, contrasts_matrix = contrasts_matrix),
+    class = "error_no_formula"
+  )
+})
+
+
 test_that("run_dream() transforms w/ dream-voom, fits LMM w/ dream, and computes moderated stats w/ eBayes", {
   # construct SummarizedExperiment w/ mixed model formula
   n_genes <- 250L
